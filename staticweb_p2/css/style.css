@@ -1,0 +1,233 @@
+/* ===============================================
+================== STENCIL CODE ==================
+================================================== */
+
+/* Loads the "Work Sans" font hosted by Google Fonts. */
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:400,500,600,700');
+
+/* Resetting some default values—feel free to override these elsewhere */
+body,div,h1,h2,h3,h4,h5,ul {
+	padding: 0;
+	margin: 0;
+}
+
+/* Take note of how to apply a custom font, weight (thickness), and size! */
+p {
+	font-family:"Work Sans", "Helvetica Neue", Helvetica, sans-serif;
+	font-weight: 400;
+	font-size: 12px;
+}
+
+/* Prevents the maximum width of the content blocks from exceeding 768px */
+#header,#splash_content,#features,#footer {
+	max-width: 768px;
+}
+
+/* ===============================================
+=============== Your code below! =================
+================================================== */
+a,h1,h2,h3,h4,h5 {
+	font-family:"Work Sans", "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+p {
+	line-height: 1.5;
+}
+
+#header,#splash_content,#features,#footer {
+	margin: 0 auto;
+}
+
+#header {
+	height: 96px;
+}
+
+#logo, #logo-icon {
+	float: left;
+	margin:auto;
+	line-height: 96px;
+	display: inline-block;
+}
+#logo-icon {
+	margin-top: 38px;
+}
+
+#logo a{
+	font-size: 14px;
+	font-weight:bold;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+}
+
+#nav_link_container {
+    list-style-type: none;
+    margin: auto;
+		float: right;
+		line-height: 96px;
+		display:inline-block;
+}
+
+#nav_link_container li {
+/*#nav_features, #nav_pricing, #nav_add-ons, #nav_customers, #nav_about, #nav_blog { */
+	float: left;
+	display: inline-block;
+	margin-left: 40px;
+}
+
+#nav_link_container a {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#nav_link_container a:hover {
+	font-size: 14px;
+	font-weight: bold;
+	border-bottom: 2px solid lightgray;
+}
+
+div#splash_panel {
+	background-color: #F1F6FE;
+	height: 400px;
+}
+
+div#splash_content {
+	position: relative;
+	height: 50%;
+}
+
+#splash_graphic {
+	position:absolute;
+	right: -60px;
+	top: 0px;
+	margin: 0 auto;
+}
+
+#splash_heading {
+	font-size: 40px;
+	width: 60%;
+	padding-top: 5%;
+}
+
+p#splash_paragraph {
+	font-size: 12px;
+	width: 42%;
+}
+
+#splash_button {
+	height: 40px;
+	width: 200px;
+	margin-top: 5%;
+	border-radius: 10px;
+	background-image: linear-gradient(-180deg, #A2C1FD 0%, #6C9BF3 100%);
+}
+#splash_button:hover {
+	background-image: linear-gradient(-180deg, #577FCB 0%, #6C9BF3 100%);
+}
+
+#splash_button_label {
+	font-size: 14px;
+	text-align: center;
+	color: white;
+	padding: 10px 25px;
+	display: inline-block;
+}
+
+#features {
+	margin-top: 50px;
+	margin-bottom: 50px;
+	height: 20%;
+}
+
+.feature_column {
+	display: inline-block;
+	width: 30%;
+	height: 20%;
+	vertical-align: top;
+}
+
+#feature_paper {
+	margin-left: 4%;
+	margin-right: 4%;
+}
+
+.feature_heading {
+	font-size: 14px;
+}
+
+.feature_paragraph {
+	font-size: 12px;
+}
+
+.feature_button {
+	border: 1px solid #8EB4F4;
+	border-radius: 5px;
+	height: 30px;
+	width: 80px;
+	margin-top: 30px;
+	text-align: center;
+}
+
+.feature_column:not(:first-child) .feature_button {
+	margin-top: 46px;
+}
+
+.feature_button :hover {
+	background-color: #8EB4F4;
+	height: 30px;
+	width: 80px;
+	text-align: center;
+}
+
+.feature_button_label {
+	font-size: 10px;
+	line-height: 30px;
+	vertical-align: middle;
+	color: #8EB4F4;
+}
+
+.feature_button :hover >.feature_button_label{
+	font-size: 10px;
+	line-height: 30px;
+	vertical-align: middle;
+	color: white;
+}
+
+#footer_border {
+	border-top: 1px dotted gray;
+}
+
+#footer {
+	margin-top: 40px;
+}
+
+.footer_column {
+	width: 25%;
+	display: inline-block;
+	position: relative;
+}
+
+.footer_heading {
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-size: 12px;
+	color: gray;
+}
+
+.footer_links {
+	list-style-type: none;
+	position: absolute;
+	top: 30px;
+	left: 0;
+}
+
+.footer_links a{
+	font-size: 10px;
+	color: gray;
+}
