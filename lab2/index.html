@@ -7,9 +7,20 @@
   </head>
   <body>
     <!-- TODO: Write your code here -->
+    <h2 style="color: #2e6c80;">Enter your 3 sides to see what kind of triangle you've got!</h2>
+    <p> First side: <input type="number" class="sides"> </p>
+    <p> Second side: <input type="number" class="sides"> </p>
+    <p> Third side: <input type="number" class="sides"> </p>
+    <button type="button" class="go" onclick="triangle()">Go!</button>
+    <p style="display: none;" class="warning" id="neg-nums"> Please enter positive numbers! </p>
+    <p style="display: none;" class="warning" id="non-triangle"> Sorry, your sides can not form a triangle!</p>
 
-
-
+    <div class="tri-info" style="display: none;">
+      <p>Your triangle is <span id="type"></span> and <span id="type-angle"></span>!</p>
+      <p>The three angles are <span id="angle1"></span>, <span id="angle2"></span>, <span id="angle3"></span>.</p>
+      <p>The perimeter of the triangle is <span id="perimeter"></span>.</p>
+      <p>The area of the triangle is <span id="area"></span></p>
+    </div>
     <!-- includes jQuery v3.3.1 in case you would like to use jQuery-->
     <script src="http://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
