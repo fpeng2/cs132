@@ -3,8 +3,33 @@
 	<head>
 		<meta charset="utf-8">
 		<title>SwiftFeed</title>
+        <link rel="stylesheet" href="style.css">
+        <script
+                src="https://code.jquery.com/jquery-3.1.1.min.js"
+                integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+                crossorigin="anonymous"></script>
+
+        <script src="swift.js"></script>
 	</head>
-	<body>
-		<!-- Your SwiftFeed HTML Structure Here  -->			          
+	<body onload="setRefreshInterval(3)">
+		<!-- Your SwiftFeed HTML Structure Here  -->
+        <h1>Welcome to Swift Feed!</h1>
+        <div class="config">
+            <form id="intervals">
+
+                <p>Refresh every</p>
+            <input type="radio" name="ref-intvl" value="3" id="3s" checked>3 seconds <br>
+            <input type="radio" name="ref-intvl" value="10" id="10s">10 seconds <br>
+            <input type="radio" name="ref-intvl" value="30" id="30s">30 seconds <br>
+            <input type="radio" name="ref-intvl" value="0" id="never">never <br>
+        </form>
+        <button class="go" onclick="changeInterval()">change</button>
+        </div>
+        <div class="content">
+            <div class="tw-block-parent">
+
+            </div>
+        </div>
+
 	</body>
 </html>
