@@ -154,3 +154,51 @@ Handing in:
 
 Success: swiftfeed has been turned in.
 
+----------------
+fpeng2 -- Wed Feb 21 04:49:59 EST 2018
+
+Archiving your files into a single tar file...
+lab3/
+lab3/lab3/
+lab3/lab3/app/
+lab3/lab3/app/css/
+lab3/lab3/app/css/._main.css
+lab3/lab3/app/css/main.css
+lab3/lab3/app/html/
+lab3/lab3/app/html/._index.html
+lab3/lab3/app/html/index.html
+lab3/lab3/app/js/
+lab3/lab3/app/js/components/
+lab3/lab3/app/js/components/.DS_Store
+lab3/lab3/app/js/components/._.DS_Store
+lab3/lab3/app/js/components/._Home.jsx
+lab3/lab3/app/js/components/._Query.jsx
+lab3/lab3/app/js/components/._Results.jsx
+lab3/lab3/app/js/components/Home.jsx
+lab3/lab3/app/js/components/Query.jsx
+lab3/lab3/app/js/components/Results.jsx
+lab3/lab3/app/js/.DS_Store
+lab3/lab3/app/js/._.DS_Store
+lab3/lab3/app/js/._components
+lab3/lab3/app/js/._index.jsx
+lab3/lab3/app/js/index.jsx
+lab3/lab3/app/.DS_Store
+lab3/lab3/app/._.DS_Store
+lab3/lab3/app/._css
+lab3/lab3/app/._html
+lab3/lab3/app/._js
+lab3/lab3/app/._madlib.js
+lab3/lab3/app/madlib.js
+lab3/lab3/server/
+lab3/lab3/server/._app.js
+lab3/lab3/server/app.js
+lab3/lab3/.babelrc
+lab3/lab3/.gitignore
+lab3/lab3/README.md
+lab3/lab3/package-lock.json
+lab3/lab3/package.json
+lab3/lab3/webpack.config.js
+Handing in:
+
+Success: lab3 has been turned in.
+
