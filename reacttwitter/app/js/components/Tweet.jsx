@@ -5,6 +5,30 @@ import React from 'react';
 export default class Tweet extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+            colorcoin: true,
+
+        }
+    }
+
+    handleClick(e) {
+        let el = e.target;
+        while (el && !el.getAttribute("data-is-parent")) {
+            el = el.parentElement;
+        }
+        if (this.state.colorcoin) {
+            el.style["background-color"] = "rgba(160, 200, 220, 0.12)";
+            console.log("clicked! " + el.style["background-color"])
+            this.setState({
+                colorcoin: false,
+            })
+        } else {
+            el.style["background-color"] = "";
+            console.log("clicked! " + el.style["background-color"])
+            this.setState({
+                colorcoin: true,
+            })
+        }
     }
 
     render(){
@@ -14,26 +38,25 @@ export default class Tweet extends React.Component {
         if (this.props.data.user.hasOwnProperty("profile_image_url")) {
             avatar = (
                 <div className="Avatar"
-                     style={"background: url(" + this.props.data.user.profile_image_url + ");"}>
+                     style={{background: "url(" + this.props.data.user.profile_image_url + ")"}}>
                 </div>
             )
         } else {
             avatar = (
                 <div className="Avatar"
-                     style={"background: url(img/no_photo.png);"}>
+                     style={{background: "url(img/no_photo.png)"}}>
                 </div>
             )
         }
         let authorlink = null;
         if (this.props.data.user.hasOwnProperty("url") && this.props.data.user.url != null) {
-            console.log(item.user.url);
             authorlink =(<a className="TweetAuthor-link" href={this.props.data.user.url}> </a>)
         } else {
             authorlink =(<a className="TweetAuthor-link" href="#"> </a>)
         }
         return (
             <div className="timeline-TweetList-tweet">
-                <div className="timeline-Tweet">
+                <div className="timeline-Tweet" onClick={(e)=>this.handleClick(e)} data-is-parent>
                     <div className="timeline-Tweet-brand">
                         <div className="Icon Icon--twitter"></div>
                     </div>
@@ -45,10 +68,10 @@ export default class Tweet extends React.Component {
                                 </span>
                             <span className="TweetAuthor-name">{this.props.data.user.name}</span>
                             {verified}
-                            <span class="TweetAuthor-screenName">{"@" + this.props.user.screenName} </span>
+                            <span className="TweetAuthor-screenName">{"@" + this.props.data.user.screen_name} </span>
                         </div>
                     </div>
-                    <div class="timeline-Tweet-text">{this.props.data.text}</div>
+                    <div className="timeline-Tweet-text" onClick={null}>{this.props.data.text}</div>
                 </div>
             </div>
         );

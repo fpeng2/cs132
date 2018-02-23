@@ -7,37 +7,43 @@ export default class Home extends React.Component {
         let nowthis = this;
         this.state = {
             nIntervId: null,
-            loadedIDs: [],
+            loadedIDs: new Set(),
             setDelay: function(delay) {
-                nowthis.changeInterval(delay)
-                console.log("home.state"+nowthis.state.new_inputs)
+                nowthis.changeInterval(delay);
+                console.log("home.state:"+nowthis.state.nIntervId)
             },
             tweets: [],
         }
+        this.refreshTweet();
     }
 
     refreshTweet(){
+        console.log("refreshing!")
         let mythis = this;
         $.get('http://ec2-18-216-120-197.us-east-2.compute.amazonaws.com:3030/feed/start', function(data, status) {
             if (status === "success") {
-                let new_data = []
-                for (var i = 0; i < data.length; i++) {
-                    if (mythis.state.loadedIDs.includes(data[i].id_str)) {
+                let new_data = [];
+                for (let i = 0; i < data.length; i++) {
+                    if (mythis.state.loadedIDs.has(data[i].id_str)) {
+                        console.log("duplicate!")
                         continue;
                     }
-                    let loaded = mythis.state.loadedIDs;
                     mythis.setState({
-                        loadedIDs: loaded.concat([data[i].id_str])
+                        loadedIDs: mythis.state.loadedIDs.add(data[i].id_str)
                     })
-                    new_data.concat([<Tweet data={data[i]}/>]);
+                    new_data = new_data.concat([<Tweet key={data[i].id_str} data={data[i]}/>]);
                 }
+                console.log("got new data: " + new_data.length);
+
                 let len = 26 - new_data.length;
-                for (let i = 0; i < min(len, mythis.state.tweets.length); i++) {
-                    new_data.concat([mythis.state.tweets[i]]);
-                }
+                console.log("appending new data: " + Math.min(len, mythis.state.tweets.length));
+                for (let i = 0; i < Math.min(len, mythis.state.tweets.length); i++) {
+                    new_data = new_data.concat([mythis.state.tweets[i]]);
+                };
                 mythis.setState({
                     tweets: new_data,
-                })
+                });
+                console.log("got tweets:"+mythis.state.tweets.length);
             } else {
                 console.log("Received error:", status);
             }
@@ -45,14 +51,16 @@ export default class Home extends React.Component {
     }
 
     setRefreshInterval(delay) {
+        console.log("setting refresh interval" + delay)
         this.refreshTweet();
-        let nIntervId = setInterval(this.refreshTweet.bind(this), delay * 1000);
+        let Id = setInterval(this.refreshTweet.bind(this), delay * 1000);
         this.setState({
-            nIntervId: nIntervId,
+            nIntervId: Id,
         })
     }
 
     changeInterval(delay) {
+        console.log("changing delay to:" + delay)
         if (this.state.nIntervId != null) {
             clearInterval(this.state.nIntervId);
             this.setState({
@@ -85,26 +93,34 @@ class Sidebar extends React.Component{
         super(props);
     }
 
-    handleClick(val){
+    handleClick(val, e){
+        console.log("handleClick: "+val+e);
         this.props.setDelay(val);
     }
 
     render(){
         let options = [3, 10, 30, 0];
         let inputs = options.map((val) =>
-            <div>
-                <input type="radio" name="ref-intvl" value={val} id={"input"+val} onclick={this.handleClick(val)}/>
-                {val == 0? "never" : val+"seconds"}
+            <div key={val}>
+                <input type="radio" name="ref-intvl" value={val} id={"input"+val}
+                       onChange={(e) => this.handleClick(val, e)} defaultChecked={val == 0? true: false}
+                />
+                {val == 0? " never" : " " + val + "seconds"}
                 <br/>
             </div>)
+        let form = (
+            <form id="intervals">
+                <p>Refresh every</p>
+                {inputs}
+            </form>
+
+        )
         return (
             <div className="config">
-                <form id="intervals">
-                    <p>Refresh every</p>
-                    {inputs}
-                </form>
+                {form}
             </div>
         );
+
+        //<button className="go" onClick={this.handleClick()}/>
     }
-    //<button className="go" onclick={this.handleClick()}>change</button>
 }
