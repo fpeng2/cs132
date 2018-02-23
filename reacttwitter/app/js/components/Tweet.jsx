@@ -17,7 +17,7 @@ export default class Tweet extends React.Component {
             el = el.parentElement;
         }
         if (this.state.colorcoin) {
-            el.style["background-color"] = "rgba(160, 200, 220, 0.12)";
+            el.style["background-color"] = "rgba(160, 200, 220, 0.5)";
             console.log("clicked! " + el.style["background-color"])
             this.setState({
                 colorcoin: false,
