@@ -48,69 +48,76 @@ if (process.argv.length < 3) {
     };
 
 
-    if (process.argv[2] == "related") {
-        // bind a function to perform when the database has been opened
-        db.once('open', function () {
-            // perform any queries here, more on this later
 
-            console.log("Connected to DB!");
+    // bind a function to perform when the database has been opened
+    db.once('open', function () {
+        // perform any queries here, more on this later
 
-            var query = CD.find({'tracks.artist': 'Taylor Swift'}).and({'tracks.artist': 'Beyonce'});
+        console.log("Connected to DB!");
+        if (process.argv[2] == "related") {
+            var query = CD.find({'tracks.artist': process.argv[3]}).and({'tracks.artist': process.argv[4]}).limit(5);
             var p = queryListNotEmpty(query);
-            var returnval;
-            p.then(function(result) {
-                returnval = result;
-                console.log("promise got result:" + result);
-
-
-
-                db.close(function () {
-                    console.log("program exiting");
-                })
-            }).catch(function(err) {
-                console.log(err);
-
-
-
-                db.close(function () {
-                    console.log("program exiting");
-                })
-            })
-            //console.log(returnval);
-        });
-
-
-        mongoose.Promise = Promise; // use an updated promise library
-        mongoose.connect(url, options); // unlike the prelab we are passing in some options
-        function queryListNotEmpty(query) {
-            var p = new Promise (function (resolve, reject){
-                query.exec(function(err, data) {
-                    if (err) {
-                        return reject(err);
-                    }
-                    var result;
-                    if (data.length > 0) {
-                        result = true;
-                        console.log(true);
-                    }else {
-                        console.log(false);
-                        result = false;
-                    }
-                    resolve(result);
-                })
-            })
-            return p;
+        } else if (process.argv[2] == "search"){
+            var query = CD.find({'artist' : process.argv[3]}).limit(Number(process.argv[4]));
+            var p = queryListAllcallback(query);
+        } else {
+            console.log("wrong command!");
+            db.close(function () {
+                console.log("program exiting");
+            });
+            return;
         }
-        function listcallback(err, data) {
+        p.then(function() {
+            console.log("promise got then");
+            db.close(function () {
+                console.log("program exiting");
+            })
+        }).catch(function(err) {
+            console.log(err);
+
+            db.close(function () {
+                console.log("program exiting");
+            })
+        })
+        //console.log(returnval);
+    });
+
+
+    mongoose.Promise = Promise; // use an updated promise library
+    mongoose.connect(url, options); // unlike the prelab we are passing in some options
+
+    function queryListNotEmpty(query) {
+        var p = new Promise (function (resolve, reject){
+            query.exec(function(err, data) {
+                if (err) {
+                    return reject(err);
+                }
+                var result;
+                if (data.length > 0) {
+                    result = true;
+                    console.log(true);
+                    for (var i = 0; i < data.length; i++) {
+                        console.log(data[i]);
+                    };
+                }else {
+                    console.log(false);
+                    result = false;
+                }
+                resolve();
+            })
+        })
+        return p;
+    }
+    function queryListAllcallback(query) {
+        return new Promise (function (resolve, reject) {
+            if (err) {
+                return reject(err);
+            }
             for (var i = 0; i < data.length; i++) {
                 console.log(data[i]);
-                console.log(true);
             };
-            if (data.length <= 0) {
-                console.log(false);
-            }
-        }
-
+            resolve()
+        })
     }
 
 }
