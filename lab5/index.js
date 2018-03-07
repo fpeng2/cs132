@@ -61,8 +61,20 @@ if (process.argv.length < 3) {
             p.then(function(result) {
                 returnval = result;
                 console.log("promise got result:" + result);
+
+
+
+                db.close(function () {
+                    console.log("program exiting");
+                })
             }).catch(function(err) {
                 console.log(err);
+
+
+
+                db.close(function () {
+                    console.log("program exiting");
+                })
             })
             //console.log(returnval);
         });
@@ -99,11 +111,6 @@ if (process.argv.length < 3) {
             }
         }
 
-
-
-        db.close(function () {
-            console.log("program exiting");
-        })
     }
 
 }
