@@ -1,5 +1,5 @@
 // TODO: your code goes here
-console.log(process.argv);
+//console.log(process.argv);
 if (process.argv.length < 3) {
     console.log ("Please specify command!")
 } else {
@@ -53,7 +53,7 @@ if (process.argv.length < 3) {
     db.once('open', function () {
         // perform any queries here, more on this later
 
-        console.log("Connected to DB!");
+        // console.log("Connected to DB!");
         var query, p;
         if (process.argv[2] == "related") {
             query = CD.find({'tracks.artist': process.argv[3]}).and({'tracks.artist': process.argv[4]}).limit(5);
@@ -62,25 +62,25 @@ if (process.argv.length < 3) {
             var targetName = process.argv[3];
             query = CD.find({'tracks.artist': targetName}).
                 find({'tracks.artist': {$ne : targetName}}).
-                limit(Number(process.argv[4])).select('tracks.artist');
-            p = queryListAllCallback(query);
+                limit(Number(process.argv[4]));
+            p = queryListAllCallback(query, targetName);
         } else {
             console.log("wrong command!");
             db.close(function () {
-                console.log("program exiting");
+                // console.log("program exiting");
             });
             return;
         }
         p.then(function() {
-            console.log("promise got then");
+            // console.log("promise got then");
             db.close(function () {
-                console.log("program exiting");
+                // console.log("program exiting");
             })
         }).catch(function(err) {
             console.log(err);
 
             db.close(function () {
-                console.log("program exiting");
+                // console.log("program exiting");
             })
         })
         //console.log(returnval);
@@ -98,9 +98,11 @@ if (process.argv.length < 3) {
                 }
                 if (data.length > 0) {
                     console.log(true);
+                    /*
                     for (var i = 0; i < data.length; i++) {
-                        console.log(data[i]);
+                         console.log(data[i]);
                     }
+                    */
                 }else {
                     console.log(false);
                 }
@@ -108,7 +110,7 @@ if (process.argv.length < 3) {
             })
         });
     }
-    function queryListAllCallback(query) {
+    function queryListAllCallback(query, targetName) {
         return new Promise (function (resolve, reject) {
             query.exec(function(err, data) {
                 if (err) {
@@ -117,9 +119,12 @@ if (process.argv.length < 3) {
                 var artists = new Set();
                 for (var i = 0; i < data.length; i++) {
                     var isBreak = false;
-                    for (var j = 0; j < data[i].tracks.length; i++) {
-                        artists.add(data[i].tracks[j].artist);
-                        if (artists.length >= Number(process.argv[4])) {
+                    for (var j = 0; j < data[i].tracks.length; j++) {
+                        artistName = data[i].tracks[j].artist;
+                        if (artistName != targetName) {
+                            artists.add(artistName);
+                        }
+                        if (artists.size >= Number(process.argv[4])) {
                             isBreak = true;
                             break;
                         }
