@@ -54,36 +54,16 @@ if (process.argv.length < 3) {
         // perform any queries here, more on this later
 
         console.log("Connected to DB!");
-        var query, p
+        var query, p;
         if (process.argv[2] == "related") {
             query = CD.find({'tracks.artist': process.argv[3]}).and({'tracks.artist': process.argv[4]}).limit(5);
             p = queryListNotEmpty(query);
         } else if (process.argv[2] == "search"){
-            var targetName = process.argv[3]
+            var targetName = process.argv[3];
             query = CD.find({'tracks.artist': targetName}).
                 find({'tracks.artist': {$ne : targetName}}).
                 limit(Number(process.argv[4])).select('tracks.artist');
-            query.then(function(data) {
-                var artists = new Set();
-                for (var i = 0; i < data.length; i++) {
-                    var isBreak = false;
-                    for (var j = 0; j < data[i].tracks.length; i++) {
-                        artists.add(data[i].tracks[j].artist)
-                        if (artists.length >= Number(process.argv[4])) {
-                            isBreak = true;
-                            break;
-                        }
-                    }
-                    if (isBreak) {
-                        break;
-                    }
-                }
-                artists.forEach(function(value) {
-                    console.log(value);
-                });
-            }).catch(function(err) {
-                console.log(err);
-            })
+            p = queryListAllCallback(query);
         } else {
             console.log("wrong command!");
             db.close(function () {
@@ -111,7 +91,7 @@ if (process.argv.length < 3) {
     mongoose.connect(url, options); // unlike the prelab we are passing in some options
 
     function queryListNotEmpty(query) {
-        var p = new Promise (function (resolve, reject){
+        return new Promise (function (resolve, reject){
             query.exec(function(err, data) {
                 if (err) {
                     return reject(err);
@@ -126,8 +106,7 @@ if (process.argv.length < 3) {
                 }
                 resolve();
             })
-        })
-        return p;
+        });
     }
     function queryListAllCallback(query) {
         return new Promise (function (resolve, reject) {
@@ -135,9 +114,23 @@ if (process.argv.length < 3) {
                 if (err) {
                     return reject(err);
                 }
+                var artists = new Set();
                 for (var i = 0; i < data.length; i++) {
-                    console.log(data[i]);
+                    var isBreak = false;
+                    for (var j = 0; j < data[i].tracks.length; i++) {
+                        artists.add(data[i].tracks[j].artist);
+                        if (artists.length >= Number(process.argv[4])) {
+                            isBreak = true;
+                            break;
+                        }
+                    }
+                    if (isBreak) {
+                        break;
+                    }
                 }
+                artists.forEach(function(value) {
+                    console.log(value);
+                });
                 resolve();
             })
         })
