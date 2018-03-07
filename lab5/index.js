@@ -27,11 +27,7 @@ if (process.argv.length < 3) {
 
     db.on('error', console.error); // log any errors that occur
 
-// bind a function to perform when the database has been opened
-    db.once('open', function () {
-        // perform any queries here, more on this later
-        console.log("Connected to DB!");
-    });
+
 
 // process is a global object referring to the system process running this
 // code, when you press CTRL-C to stop Node, this closes the connection
@@ -51,10 +47,27 @@ if (process.argv.length < 3) {
         useMongoClient: true  // due to version issues, this is necessary to avoid warnings
     };
 
-    mongoose.Promise = Promise; // use an updated promise library
-    mongoose.connect(url, options); // unlike the prelab we are passing in some options
 
     if (process.argv[2] == "related") {
+        // bind a function to perform when the database has been opened
+        db.once('open', function () {
+            // perform any queries here, more on this later
+
+            console.log("Connected to DB!");
+
+            query = CD.find({'tracks.artist': 'Taylor Swift'}).and({'tracks.artist': 'Beyonce'});
+            var p = queryListNotEmpty(query);
+            var returnval;
+            p.then(function(result) {
+                returnval = result;
+                console.log("promise got result:" + result);
+            })
+            console.log(returnval);
+        });
+
+
+        mongoose.Promise = Promise; // use an updated promise library
+        mongoose.connect(url, options); // unlike the prelab we are passing in some options
         function queryListNotEmpty(query) {
             var p = new Promise (function (resolve, reject){
                 query.exec(function(err, data) {
@@ -84,14 +97,6 @@ if (process.argv.length < 3) {
             }
         }
 
-        query = CD.find({'tracks.artist': 'Taylor Swift'}).and({'tracks.artist': 'Beyonce'});
-        var p = queryListNotEmpty(query);
-        var returnval;
-        p.then(function(result) {
-            returnval = result;
-            console.log("promise got result:" + result);
-        })
-        console.log(returnval);
 
 
         db.close(function () {
