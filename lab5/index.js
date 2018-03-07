@@ -54,12 +54,13 @@ if (process.argv.length < 3) {
         // perform any queries here, more on this later
 
         console.log("Connected to DB!");
+        var query, p
         if (process.argv[2] == "related") {
-            var query = CD.find({'tracks.artist': process.argv[3]}).and({'tracks.artist': process.argv[4]}).limit(5);
-            var p = queryListNotEmpty(query);
+            query = CD.find({'tracks.artist': process.argv[3]}).and({'tracks.artist': process.argv[4]}).limit(5);
+            p = queryListNotEmpty(query);
         } else if (process.argv[2] == "search"){
-            var query = CD.find({'artist' : process.argv[3]}).limit(Number(process.argv[4]));
-            var p = queryListAllcallback(query);
+            query = CD.find({'artist' : process.argv[3]}).limit(Number(process.argv[4]));
+            p = queryListAllCallback(query);
         } else {
             console.log("wrong command!");
             db.close(function () {
@@ -94,29 +95,29 @@ if (process.argv.length < 3) {
                 }
                 var result;
                 if (data.length > 0) {
-                    result = true;
                     console.log(true);
                     for (var i = 0; i < data.length; i++) {
                         console.log(data[i]);
-                    };
+                    }
                 }else {
                     console.log(false);
-                    result = false;
                 }
                 resolve();
             })
         })
         return p;
     }
-    function queryListAllcallback(query) {
+    function queryListAllCallback(query) {
         return new Promise (function (resolve, reject) {
-            if (err) {
-                return reject(err);
-            }
-            for (var i = 0; i < data.length; i++) {
-                console.log(data[i]);
-            };
-            resolve()
+            query.exec(function(err, data) {
+                if (err) {
+                    return reject(err);
+                }
+                for (var i = 0; i < data.length; i++) {
+                    console.log(data[i]);
+                }
+                resolve();
+            })
         })
     }
 
