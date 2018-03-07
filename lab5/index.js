@@ -56,19 +56,25 @@ if (process.argv.length < 3) {
 
     if (process.argv[2] == "related") {
         function queryListNotEmpty(query) {
-            var result;
-            function listCallback(err, data) {
-                if (data.length > 0) {
-                    result = true;
-                    console.log(true);
-                } else {
-                    console.log(false);
-                    result = false;
-                }
-            }
-            query.exec(listCallback).then();
-            while (result == undefined) {}
-            return result;
+            var p = new Promise (function (resolve, reject){
+                query.exec(function(err, data) {
+                    if (err) {
+                        return reject(err);
+                    }
+                    var result;
+                    if (data.length > 0) {
+                        result = true;
+                        console.log(true);
+                    }else {
+                        console.log(false);
+                        result = false;
+                    }
+                    resolve(result);
+                })
+            })
+            p.then(function(result) {
+                console.log("promise got result:" + result);
+            })
         }
         function listcallback(err, data) {
             for (var i = 0; i < data.length; i++) {
