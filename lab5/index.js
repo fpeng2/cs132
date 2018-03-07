@@ -43,8 +43,8 @@ if (process.argv.length < 3) {
     });
 
 // the user, password, and url values will be explained next
-    var url = "mongodb://bdognom.cs.brown.edu/cdquery"; // 1%:
-//var url = "mongodb://bdognom.cs.brown.edu/cdquery1"; // 1%
+    //var url = "mongodb://bdognom.cs.brown.edu/cdquery"; // 1%:
+    var url = "mongodb://bdognom.cs.brown.edu/cdquery1"; // 1%
     var options = {
         user: 'cs132',
         pass: 'csci1320',
@@ -60,9 +60,13 @@ if (process.argv.length < 3) {
             function listCallback(err, data) {
                 if (data.length > 0) {
                     result = true;
+                    console.log(true);
+                } else {
+                    console.log(false);
                 }
             }
             query.exec(listCallback);
+            return result;
         }
         function listcallback(err, data) {
             for (var i = 0; i < data.length; i++) {
@@ -71,9 +75,7 @@ if (process.argv.length < 3) {
         }
 
         query = CD.find({'tracks.artist': 'Taylor Swift'}).and({'tracks.artist': 'Beyonce'});
-        if (queryListNotEmpty(query)) {
-            console.log(true);
-        }
+        queryListNotEmpty(query)
 
         db.close(function () {
             console.log("program exiting");
