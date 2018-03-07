@@ -59,8 +59,31 @@ if (process.argv.length < 3) {
             query = CD.find({'tracks.artist': process.argv[3]}).and({'tracks.artist': process.argv[4]}).limit(5);
             p = queryListNotEmpty(query);
         } else if (process.argv[2] == "search"){
-            query = CD.find({'artist' : process.argv[3]}).limit(Number(process.argv[4]));
-            p = queryListAllCallback(query);
+            var targetName = process.argv[3]
+            query = CD.find({'tracks.artist': targetName}).
+                find({'tracks.artist': {$ne : targetName}}).
+                limit(Number(process.argv[4])).select('tracks.artist');
+            query.then(function(data) {
+                var artists = new Set();
+                for (var i = 0; i < data.length; i++) {
+                    var isBreak = false;
+                    for (var j = 0; j < data[i].tracks.length; i++) {
+                        artists.add(data[i].tracks[j].artist)
+                        if (artists.length >= Number(process.argv[4])) {
+                            isBreak = true;
+                            break;
+                        }
+                    }
+                    if (isBreak) {
+                        break;
+                    }
+                }
+                artists.forEach(function(value) {
+                    console.log(value);
+                });
+            }).catch(function(err) {
+                console.log(err);
+            })
         } else {
             console.log("wrong command!");
             db.close(function () {
@@ -93,7 +116,6 @@ if (process.argv.length < 3) {
                 if (err) {
                     return reject(err);
                 }
-                var result;
                 if (data.length > 0) {
                     console.log(true);
                     for (var i = 0; i < data.length; i++) {
@@ -119,6 +141,12 @@ if (process.argv.length < 3) {
                 resolve();
             })
         })
+    }
+
+    function listCallback(err, data) {
+        for (var i = 0; i < data.length; i++) {
+            console.log(data[i]);
+        }
     }
 
 }
