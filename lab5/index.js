@@ -72,9 +72,7 @@ if (process.argv.length < 3) {
                     resolve(result);
                 })
             })
-            p.then(function(result) {
-                console.log("promise got result:" + result);
-            })
+            return p;
         }
         function listcallback(err, data) {
             for (var i = 0; i < data.length; i++) {
@@ -87,7 +85,13 @@ if (process.argv.length < 3) {
         }
 
         query = CD.find({'tracks.artist': 'Taylor Swift'}).and({'tracks.artist': 'Beyonce'});
-        queryListNotEmpty(query)
+        var p = queryListNotEmpty(query);
+        var returnval;
+        p.then(function(result) {
+            returnval = result;
+            console.log("promise got result:" + result);
+        })
+        console.log(returnval);
 
 
         db.close(function () {
