@@ -39,7 +39,7 @@ if (process.argv.length < 3) {
     });
 
 // the user, password, and url values will be explained next
-    var url = "mongodb://bdognom.cs.brown.edu/cdquery"; // 1%:
+    var url = "mongodb://bdognom.cs.brown.edu/cdquery";
     //var url = "mongodb://bdognom.cs.brown.edu/cdquery1"; // 1%
     var options = {
         user: 'cs132',
