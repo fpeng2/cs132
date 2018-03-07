@@ -55,14 +55,16 @@ if (process.argv.length < 3) {
 
             console.log("Connected to DB!");
 
-            query = CD.find({'tracks.artist': 'Taylor Swift'}).and({'tracks.artist': 'Beyonce'});
+            var query = CD.find({'tracks.artist': 'Taylor Swift'}).and({'tracks.artist': 'Beyonce'});
             var p = queryListNotEmpty(query);
             var returnval;
             p.then(function(result) {
                 returnval = result;
                 console.log("promise got result:" + result);
+            }).catch(function(err) {
+                console.log(err);
             })
-            console.log(returnval);
+            //console.log(returnval);
         });
 
 
