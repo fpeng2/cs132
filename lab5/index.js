@@ -56,26 +56,33 @@ if (process.argv.length < 3) {
 
     if (process.argv[2] == "related") {
         function queryListNotEmpty(query) {
-            var result = false;
+            var result;
             function listCallback(err, data) {
                 if (data.length > 0) {
                     result = true;
                     console.log(true);
                 } else {
                     console.log(false);
+                    result = false;
                 }
             }
-            query.exec(listCallback);
+            query.exec(listCallback).then();
+            while (result == undefined) {}
             return result;
         }
         function listcallback(err, data) {
             for (var i = 0; i < data.length; i++) {
                 console.log(data[i]);
+                console.log(true);
+            };
+            if (data.length <= 0) {
+                console.log(false);
             }
         }
 
         query = CD.find({'tracks.artist': 'Taylor Swift'}).and({'tracks.artist': 'Beyonce'});
         queryListNotEmpty(query)
+
 
         db.close(function () {
             console.log("program exiting");
