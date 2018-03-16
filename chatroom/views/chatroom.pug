@@ -1,0 +1,14 @@
+doctype html
+html(lang="en")
+    head
+        title Room:#{roomName}
+        meta( name="roomName" content=roomName)
+        meta(name="nickname" content=nickname)
+    body
+        h1.welcome.
+            Welcome to #{roomName}, #{nickname}!
+        div.container#messages
+        |
+        form(method="post", action="/sendMessage")
+            input#new-message(type="text", name="content")
+            input(type="submit", name="send", value="send")

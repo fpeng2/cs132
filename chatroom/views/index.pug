@@ -1,0 +1,18 @@
+doctype html
+html(lang="en")
+    head
+        title='Chatrooms'
+        script(src="/scripts.js")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+    body
+        h1.welcome.
+            Welcome to Chatrooms!
+        #container.col
+            button(onclick="createNewRoom()").
+                Create a new chatroom
+            p or
+            p Enter a room with ID:
+            form#enter-chatroom
+                input(type='text', id="roomNumber")
+                input(type='submit', name="Go!", onclick="enterRoom()")
+
