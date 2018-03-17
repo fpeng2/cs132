@@ -1,14 +1,20 @@
 doctype html
 html(lang="en")
     head
-        title Room:#{roomName}
-        meta( name="roomName" content=roomName)
+        title Room #{roomId}
+        meta(name="roomId" content=roomId)
         meta(name="nickname" content=nickname)
-    body
+        script(src="/scripts.js")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+    body(onload="initMessages()")
         h1.welcome.
-            Welcome to #{roomName}, #{nickname}!
-        div.container#messages
-        |
-        form(method="post", action="/sendMessage")
+            Welcome to Room #{roomId}, #{nickname}!
+        div.container()
+            ul#messages
+        form(method="post", action="javascript:void(0);")
+            p.
+                Enter your message:
             input#new-message(type="text", name="content")
-            input(type="submit", name="send", value="send")
+            input(type="button", name="send", value="send", onclick="sendMessage()")
+        span#info
+        |

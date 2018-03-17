@@ -27,21 +27,32 @@ function setup() {
 
     app.get('/index', renderIndex);
 
-    app.post('/createNewRoom', createNewRoom)
+    app.get('/hotChatrooms', getHotChatrooms);
+
+    app.get('/createNewRoom', createNewRoom);
+
+    //app.post('/chatroom', tmp)
+    app.post('/chatroom/:roomId([ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{6})', enterRoom);
+
+    app.get('/:roomId([ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{6})/messages', getMessages);
+
+    app.post('/:roomId([ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{6})/sendMessage', sendMessage);
 
     app.get('/scripts.js', function(req, res) {
         res.sendFile(__dirname + "/" + "scripts.js");
     });
 
+    app.all('/chatroom/*', invalidRoom)
     app.all("*", handle404);
+
 
     var server = app.listen(port);
     console.log(("- Server listening on port: " + port).gray)
 }
 
 function logError(err) {
-    if (err != null) {
-        console.log(err.red)
+    if (err != undefined) {
+        console.log(err);
     }
 }
 
@@ -54,13 +65,13 @@ function createDB() {
         }
     );
     conn.query('' +
-        'CREATE TABLE message (' +
+        'CREATE TABLE messages (' +
         '  id INTEGER PRIMARY KEY AUTOINCREMENT,' +
         '  room TEXT,' +
         '  nickname TEXT,' +
         '  body TEXT,' +
-        '  time INTEGER，' +
-        '  FOREIGN KEY （room) REFERENCES rooms(room) ' +
+        '  time INTEGER, ' +
+        '  FOREIGN KEY (room) REFERENCES rooms(room) ' +
         ')', function (err, data) {
             logError(err);
         }
@@ -68,13 +79,37 @@ function createDB() {
     return conn;
 }
 
+// handle 404
+function invalidRoom(request, response) {
+    response.render('invalidRoom', {});
+}
+function handle404(request, response){
+    response.sendStatus(404);
+}
+
 // renderIndex
 function renderIndex(request, response) {
     response.render('index', {});
 }
 
-function handle404(request, response){
-    response.sendStatus(404);
+function getHotChatrooms(request, response) {
+    var sql = '' +
+        'SELECT COUNT(body) as num, room ' +
+        ' FROM messages' +
+        ' GROUP BY room' +
+        ' ORDER BY COUNT(body) DESC';
+    dbconn.query(sql, function (err, result) {
+        logError(err);
+        if (err != null) {
+            response.json([]);
+        } else {
+            var rows = result.rows;
+            console.log(rows);
+            //rows = rows.filter(item => item.num > 0);
+            rows = rows.slice(0, 20);
+            response.json(rows);
+        }
+    })
 }
 
 function generateRoomIdentifier() {
@@ -89,23 +124,70 @@ function generateRoomIdentifier() {
     return result;
 }
 
-function generateRoomIDDB() {
-
-}
 function createNewRoom(request, response) {
     var roomId = generateRoomIdentifier();
-    console.log(request.green);
     dbconn.query('INSERT INTO rooms VALUES($1)', [roomId], function(err, data) {
         logError(err);
         if (err != null) {
             createNewRoom(request, response);
         } else {
-            console.log(request.green);
-            var nickname = request.body.nickname;
-            response.redirect(response.render('chatroom', {
-                roomName: roomId,
-                nickname: nickname
-            }))
+            console.log(("New room ID:" + roomId).green);
+            response.send(roomId);
         }
     });
+}
+
+function enterRoom(request, response) {
+    var roomId = request.params.roomId;
+    var nickname = request.body.nickname;
+    response.render('chatroom', {
+                roomId: roomId,
+                nickname: nickname
+            }, function(err, html){
+                logError(err);
+                console.log(("redirecting to chatroom" + roomId).gray);
+                response.send(html);
+            });
+}
+
+//chatroom
+function getMessages(request, response) {
+    var roomId = request.params.roomId;
+    dbconn.query('' +
+        'SELECT nickname, body, time' +
+        ' FROM messages' +
+        ' WHERE room=$1' +
+        ' ORDER BY time ASC',
+        [roomId], function (err, result) {
+            logError(err);
+            if (err != null) {
+                response.json([]);
+            } else {
+                var messages = result.rows;
+                console.log(messages);
+                console.log(typeof(messages));
+                response.json(messages);
+            }
+        })
+}
+
+function sendMessage(request, response) {
+    var roomId = request.params.roomId;
+    var nickname = request.body.nickname;
+    var message = request.body.content;
+    var d = new Date();
+    var time = d.getTime();
+    console.log([roomId, nickname, message, time]);
+    dbconn.query('' +
+        'INSERT INTO messages ' +
+        'VALUES($1, $2, $3, $4, $5)',
+        [null, roomId, nickname, message, time], function(err, data) {
+            logError(err);
+            if (err != undefined) {
+                response.send(err);
+            } else {
+                console.log("message inserted.")
+                response.send("ok");
+            }
+        })
 }

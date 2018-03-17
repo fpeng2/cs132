@@ -4,15 +4,21 @@ html(lang="en")
         title='Chatrooms'
         script(src="/scripts.js")
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
-    body
+    body(onload='requestChatrooms()')
         h1.welcome.
             Welcome to Chatrooms!
-        #container.col
+        #enter.container
             button(onclick="createNewRoom()").
                 Create a new chatroom
             p or
             p Enter a room with ID:
-            form#enter-chatroom
-                input(type='text', id="roomNumber")
-                input(type='submit', name="Go!", onclick="enterRoom()")
+            form#enter-chatroom(method="post", action="javascript:void(0)")
+                input(type='text', name="roomId", id="roomId")
+                input(type='hidden', name="nickname", id="nickname")
+                button(onclick="enterRoom()").
+                    Go!
+            span#invalid
+        h3.
+            Hot chatrooms:
+        ul#chatrooms
 
