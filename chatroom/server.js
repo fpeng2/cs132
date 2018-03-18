@@ -42,6 +42,10 @@ function setup() {
         res.sendFile(__dirname + "/" + "scripts.js");
     });
 
+    app.get('/styles.css', function(req, res) {
+        res.sendFile(__dirname + "/" + "styles.css");
+    });
+
     app.all('/chatroom/*', invalidRoom)
     app.all("*", handle404);
 

@@ -1,7 +1,11 @@
 function createChatroomList(data) {
-    return '<li>'+data.room+'('+data.num + 'messages)</li>';
+    return '<li class="list-group-item">' +
+        '<span class="badge">' + data.num + '</span>' +
+        '<span>' + data.room + '</span>' +
+        '</li>';
 }
 function requestChatrooms() {
+    $('#invalid').hide();
     $.get('/hotChatrooms', function (data, status) {
         if (status ==="success") {
             for (var i=0; i < data.length; i++) {
@@ -39,7 +43,7 @@ function enterRoom() {
     var roomId = $('input#roomId')[0].value;
     console.log("roomId: " + roomId);
     if (roomId ===  "") {
-        $('span#invalid').text("Please Input room ID!").show().fadeOut(3*1000);
+        $('#invalid').text("Please Input room ID!").show().fadeOut(3*1000);
         return;
     }
     submitRoom(roomId);
@@ -58,7 +62,9 @@ function meta(name) {
 function createMessage(message) {
     var author = message.nickname;
     var content = message.body;
-    return '<li>' + author + ': ' + content + '</li>';
+    return '<li class="list-group-item">' +
+        '<strong class="welcome">' +
+        author + ': </strong>' + content + '</li>';
 }
 
 function getMessages() {
@@ -73,19 +79,21 @@ function getMessages() {
         } else {
             console.log("Received error:" + status);
         }
-
+        $("#chatroom-body").scrollTop($("#chatroom-body")[0].scrollHeight);
     })
 }
 
 function initMessages() {
     getMessages();
-    nInterval = setInterval(getMessages, delay * 1000)
+    nInterval = setInterval(getMessages, delay * 1000);
+    $('#empty-message').hide();
 }
 
 function sendMessage() {
     var content = $('#new-message')[0].value;
-    if (content == "") {
-        $('span#info').text("Message Empty!").show().fadeOut(1000);
+    if (content === "") {
+        $('#empty-message').text("Message Empty!").show().fadeOut(3000);
+        return
     }
     var nickname = meta('nickname');
     var roomId = meta('roomId');
@@ -94,7 +102,7 @@ function sendMessage() {
         content: content
     }, function (data) {
         if (data == "ok") {
-            $('span#info').text("Message sent!").show().fadeOut(1000);
+            $('#new-message').val("");
             clearInterval(nInterval);
             initMessages();
         } else {

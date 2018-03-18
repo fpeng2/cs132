@@ -6,15 +6,28 @@ html(lang="en")
         meta(name="nickname" content=nickname)
         script(src="/scripts.js")
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+        link(rel="stylesheet"
+            href="../styles.css")
+        link(rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
     body(onload="initMessages()")
-        h1.welcome.
-            Welcome to Room #{roomId}, #{nickname}!
-        div.container()
-            ul#messages
-        form(method="post", action="javascript:void(0);")
-            p.
-                Enter your message:
-            input#new-message(type="text", name="content")
-            input(type="button", name="send", value="send", onclick="sendMessage()")
-        span#info
+        .container#main-container
+            .row(style="padding: 20px; text-align: center")
+                h1.welcome.
+                    Welcome to Room #{roomId}, #{nickname}!
+            .row(style="padding: 20px; height: 80%")
+                .col-lg-1
+                .col-lg-10(style="height: 100%")
+                    .panel.panel-default#chatroom-panel(style="height: 100%")
+                        .panel-body#chatroom-body
+                            ul.list-group#messages
+                        .panel-footer#chatroom-footer
+                            form(method="post", action="javascript:void(0);")
+                                .input-group.input-group-lg
+                                    input.form-control#new-message(type="text" placeholder="Your message")
+                                    span.input-group-btn
+                                        button.btn.btn-success(type="button" onclick="sendMessage()").
+                                            Go!
+                    .alert.alert-danger#empty-message(role="alert")
+                .col-lg-1
         |

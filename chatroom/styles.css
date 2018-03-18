@@ -1,0 +1,27 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+}
+
+#main-container {
+    height: 100%;
+}
+
+#chatroom-panel{
+    position: relative;
+}
+
+#chatroom-body{
+   height: 80%;
+   overflow-y: scroll;
+}
+
+#chatroom-footer{
+    bottom: 0px;
+    position: absolute;
+}
+
+.welcome{
+    color: #146d14;
+}

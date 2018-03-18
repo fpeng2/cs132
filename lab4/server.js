@@ -29,7 +29,6 @@ function setup(){
     app.get('/styles.css', function(req, res) {
         res.sendFile(__dirname + "/" + "styles.css");
     });
-
     app.use(bodyparser.urlencoded({
         extended: false,
     }));
