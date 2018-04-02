@@ -1,3 +1,4 @@
 .handin_log
 .idea/*
-*/.idea
+*/.ide
+*/node_modules
