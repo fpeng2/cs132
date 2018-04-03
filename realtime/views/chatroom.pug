@@ -1,0 +1,48 @@
+doctype html
+html(lang="en")
+    head
+        title Room #{roomId}
+        meta(name="roomId" content=roomId)
+        meta(name="nickname" content=nickname)
+        script(src="/socket.io/socket.io.js")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+        script(src="/scripts.js")
+        //script(src="/path/to/room.js")
+        link(rel="stylesheet"
+            href="../styles.css")
+        link(rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+    body
+        .container#main-container
+            .row(style="padding: 20px; text-align: center")
+                h1.welcome
+                    | Welcome to Room #{roomId},
+                    span#title-nickname #{nickname}!
+                button.btn.btn-success(type="button" onclick="changeNickname()").
+                    Change my nickname
+            .row(style="padding: 20px; height: 80%")
+                .col-md-3(style="height: 100%")
+                    .panel.panel-default#system-panel(style="height: 100%")
+                        .panel-heading.
+                            System Messages:
+                        .panel-body#system-body
+                            ul.list-group#system-messages
+                .col-md-6(style="height: 100%")
+                    .panel.panel-default#chatroom-panel(style="height: 100%")
+                        .panel-body#chatroom-body
+                            ul.list-group#messages
+                        .panel-footer#chatroom-footer
+                            form(method="post", action="javascript:void(0);")
+                                .input-group.input-group-lg
+                                    input.form-control#new-message(type="text" placeholder="Your message")
+                                    span.input-group-btn
+                                        button.btn.btn-success(type="button" onclick="sendMessage()").
+                                            Go!
+                    .alert.alert-danger#empty-message(role="alert")
+                .col-md-3(style="height: 100%")
+                    .panel.panel-default#members-panel(style="height: 100%")
+                        .panel-heading.
+                            Online Members:
+                        .panel-body#members-body
+                            ul.list-group#members
+        |

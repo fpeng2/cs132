@@ -1,0 +1,51 @@
+doctype html
+html(lang="en")
+    head
+        title='Chatrooms'
+        script(src="/socket.io/socket.io.js")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+        script(src="/scripts.js")
+        //script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        //integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        //crossorigin="anonymous")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous")
+        link(rel="stylesheet"
+        href="/styles.css")
+        link(rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+    body.text-center(onload='requestChatrooms()' style="background-color: #f5f5f5")
+        .container
+            .row(style="padding: 20px")
+                    h1.welcome.
+                        Welcome to Chatrooms!
+            .row.align-items-center(style="padding: 20px")
+                .col-lg-4
+                .col-lg-4.panel.panel-default
+                    .panel-body
+                        button.btn.btn-success.btn-lg(onclick="createNewRoom()" style="width: 100%").
+                            Create a new chatroom
+                        hr.mb-4
+                        h3.welcome(style="vertical-align: middle") or
+                        form#enter-chatroom(method="post" action="javascript:void(0)")
+                            .form-group
+                                input.form-control.hidden#nickname(type='hidden', name="nickname")
+                                input.form-control#roomId(type='text' name="roomId" placeholder="Room ID")
+                            .col-mb-4
+                                button.btn.btn-success.btn-lg(type="button" onclick="enterRoom()" style="width: 100%").
+                                    Enter room
+                        .alert.alert-danger#invalid(role="alert")
+                .col-lg-4
+            .row.justify-content-center
+                .col-lg-4
+                .col-lg-4
+                    .panel.panel-success
+                        .panel-heading.
+                            Hot chatrooms:
+                        .panel-body
+                            ul.list-group#chatrooms
+                .col-lg-4
